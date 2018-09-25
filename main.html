@@ -17,14 +17,19 @@
       font-family: Arial;
 
       /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#333333+1,000000+100 */
-      background: #333333; /* Old browsers */
-      background: -moz-radial-gradient(center, ellipse cover, #333333 1%, #000000 100%); /* FF3.6-15 */
-      background: -webkit-radial-gradient(center, ellipse cover, #333333 1%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
-      background: radial-gradient(ellipse at center, #333333 1%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      background: #333333;
+      /* Old browsers */
+      background: -moz-radial-gradient(center, ellipse cover, #333333 1%, #000000 100%);
+      /* FF3.6-15 */
+      background: -webkit-radial-gradient(center, ellipse cover, #333333 1%, #000000 100%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: radial-gradient(ellipse at center, #333333 1%, #000000 100%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#000000', GradientType=1);
+      /* IE6-9 fallback on horizontal gradient */
     }
 
-    a {
+    .menu a {
       display: block;
       line-height: 35px;
       height: 35px;
@@ -39,23 +44,48 @@
       border-radius: 20px;
     }
 
-    a:hover {
+    .menu a:hover {
       background: #fff;
+    }
+
+    #backbtn {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
-  <table height="100%" width="100%">
+  <table height="100%" width="100%" class="menu">
     <tr>
       <td align="center" valign="middle">
         <div style="display: inline-block; width: auto;">
           <h2>Main Menu</h2>
-          <a href="./gol.html">Game of Life</a>
-          <a href="./phaser3demo.html">Phaser 3 Demo</a>
+          <a href="./game-of-life/index.html">Game of Life</a>
+          <a href="./phaser3demo/index.html">Phaser 3 Demo</a>
+          <a href="./three/index.html">Three</a>
         </div>
       </td>
     </tr>
+  </table>
+  <a id="backbtn" href="#">Close</a>
+
+  <script>
+    const electron = require('electron');
+    const {
+      remote,
+      ipcRenderer
+    } = electron;
+
+    document.getElementById("backbtn").addEventListener("click", function(e) {
+      var window = remote.getCurrentWindow();
+      window.close();
+    });
+  </script>
 </body>
 
 </html>

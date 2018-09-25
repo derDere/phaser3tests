@@ -11,6 +11,7 @@
   "license": "Copyright (C) 2018 by Orbit Logistics Europe GmbH",
   "dependencies": {
     "electron": "^3.0.0",
-    "phaser": "^3.13.0"
+    "phaser": "^3.13.0",
+    "three": "^0.96.0"
   }
 }

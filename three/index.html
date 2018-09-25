@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Space</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        overflow: auto;
+        margin: 0;
+        border: 0 none;
+        color: #fff;
+        background: #000;
+        font-family: Arial;
+      }
+
+      #backbtn {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        color: #fff;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <table height="100%" width="100%">
+      <tr>
+        <td align="center" valign="middle">
+          <div id="container"></div>
+        </td>
+      </tr>
+    </table>
+    <a id="backbtn" href="../main.html">Back</a>
+    <script>
+      require('./index.js');
+    </script>
+  </body>
+</html>

@@ -1,5 +1,3 @@
-const electron = require('electron');
-const {remote, ipcRenderer} = electron;
 const Phaser = require('phaser');
 
 const WIDTH = 300;
