@@ -68,8 +68,8 @@ pointLight.position.z = 130;
 scene.add(pointLight);
 
 //skybox
- var imagePrefix = "../images/skybox-";
- var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+ var imagePrefix = "../images/skybox_";
+ var directions  = ["px", "nx", "py", "ny", "pz", "nz"];
  var imageSuffix = ".png";
 
  var materialArray = [];
