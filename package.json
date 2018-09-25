@@ -1,0 +1,16 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "Conway's Game of Life",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "electron . debug"
+  },
+  "author": "deremer",
+  "license": "Copyright (C) 2018 by Orbit Logistics Europe GmbH",
+  "dependencies": {
+    "electron": "^3.0.0",
+    "phaser": "^3.13.0"
+  }
+}
