@@ -1,4 +1,9 @@
 const BABYLON = require('babylonjs');
+const BABYLON_OBJ_LOADER = require('./babylon.objFileLoader.js');
+BABYLON_OBJ_LOADER.init(BABYLON);
+const CANNON = require('cannon');
+
+var speed = 0;
 
 var canvas = document.getElementById('renderCanvas');
 
@@ -21,53 +26,90 @@ class freeCam {
   }
 }
 
-var sphere;
+var spaceship;
 
 // createScene function that creates and return the scene
 function createScene() {
   // create a basic BJS Scene object
   var scene = new BABYLON.Scene(engine);
 
-  var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, scene);
-  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-  skyboxMaterial.backFaceCulling = false;
-  skyboxMaterial.disableLighting = true;
-  skybox.material = skyboxMaterial;
+  BABYLON.SceneLoader.Append("../assets/", "spaceship.obj", scene, function(scene) {
+    for (var mesh of scene.meshes) {
+      mesh.renderingGroupId = 1;
+    }
+    spaceship = scene.getMeshByID('_mm1');
+    spaceship.addChild(scene.getMeshByID('spaceship'));
+    spaceship.position.y = 2;
 
-  skybox.infiniteDistance = true;
-  skyboxMaterial.disableLighting = true;
+    var camera = new BABYLON.ArcRotateCamera('arcCamera',
+      BABYLON.Tools.ToRadians(-15),
+      BABYLON.Tools.ToRadians(75),
+      20.0, new BABYLON.Vector3(0, 0, 0), scene
+    );
+    camera.lockedTarget = spaceship;
+    camera.attachControl(canvas, false);
+    camera.maxZ = 1000000000;
+    //spaceship.addChild(camera);
 
-  //https://i.pinimg.com/originals/de/38/ad/de38ad4f55903add2fdbe290bcc6ef79.png
-  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("../images/spacebox", scene, ["_px.png", "_py.png", "_pz.png", "_nx.png", "_ny.png", "_nz.png"]);
-  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    // create a basic light, aiming 0,1,0 - meaning, to the sky
+    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
 
-  skybox.renderingGroupId = 0;
+    var planet = BABYLON.MeshBuilder.CreateSphere('planet', {diameter: 40000}, scene);
+    planet.position.x = 3000;
+    planet.position.y = -55000;
+    planet.position.z = 30000;
+    planet.renderingGroupId = 1;
 
+    /*
+    // create a built-in "ground" shape;
+    var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
+    ground.renderingGroupId = 1;
+    */
 
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, scene);
+    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.disableLighting = true;
+    skybox.material = skyboxMaterial;
 
-  // create a FreeCamera, and set its position to (x:0, y:5, z:-10) target the camera to scene origin
-  //var camera = new freeCam('camera1', new BABYLON.Vector3(0, 5, -10), BABYLON.Vector3.Zero(), scene, canvas);
+    skybox.infiniteDistance = true;
+    skyboxMaterial.disableLighting = true;
 
-  // create a basic light, aiming 0,1,0 - meaning, to the sky
-  var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
+    //https://i.pinimg.com/originals/de/38/ad/de38ad4f55903add2fdbe290bcc6ef79.png
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("../images/spacebox", scene, ["_px.png", "_py.png", "_pz.png", "_nx.png", "_ny.png", "_nz.png"]);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 
-  // create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation
-  sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
-  sphere.renderingGroupId = 1;
+    skybox.renderingGroupId = 0;
 
-  // move the sphere upward 1/2 of its height
-  sphere.position.y = 1;
+    /*
+    // Enable Physics
+    var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
+    var physicsPlugin = new BABYLON.CannonJSPlugin();
+    scene.enablePhysics(gravityVector, physicsPlugin);
 
-  var camera = new BABYLON.ArcRotateCamera('arcCamera',
-    BABYLON.Tools.ToRadians(45),
-    BABYLON.Tools.ToRadians(45),
-    10.0, sphere.position, scene
-  );
-  camera.attachControl(canvas, false);
+    // Creating Physics Imposter for spaceship
+    spaceship.physicsImpostor = new BABYLON.PhysicsImpostor(spaceship, BABYLON.PhysicsImpostor.MeshImpostor, {
+      mass: 1,
+      restitution: 0.9
+    }, scene);
+    */
 
-  // create a built-in "ground" shape;
-  var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
-  ground.renderingGroupId = 1;
+    //spaceship.physicsImpostor.applyImpulse(new BABYLON.Vector3(10, 0, 0), spaceship.getAbsolutePosition());
+
+    // run the render loop
+    engine.runRenderLoop(() => {
+      if (speed < 3000) speed += 30;
+      spaceship.position.x += speed;
+      //spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(2, 0, 0));
+      //spaceship.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 1));
+      scene.render();
+    });
+
+    // the canvas/window resize event handler
+    window.addEventListener('resize', () => {
+      engine.resize();
+    });
+  });
 
   // return the created scene
   return scene;
@@ -75,14 +117,3 @@ function createScene() {
 
 // call the createScene function
 var scene = createScene();
-
-// run the render loop
-engine.runRenderLoop(() => {
-  sphere.position.y += 0.01;
-  scene.render();
-});
-
-// the canvas/window resize event handler
-window.addEventListener('resize', () => {
-  engine.resize();
-});

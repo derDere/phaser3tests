@@ -19,11 +19,20 @@
       height: 100%;
       touch-action: none;
     }
+
+    #backbtn {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      color: #fff;
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
   <canvas id="renderCanvas"></canvas>
+  <a id="backbtn" href="../main.html">Back</a>
   <script>
     require('./index.js');
   </script>

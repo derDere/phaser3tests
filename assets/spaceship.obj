@@ -1,7 +1,7 @@
 # Blender v2.79 (sub 0) OBJ File: 'spaceship.blend'
 # www.blender.org
 mtllib spaceship.mtl
-o Cube
+o spaceship
 v 2.872377 -0.257429 -0.469515
 v 2.872377 -0.257429 0.469515
 v -2.160334 -0.129061 0.454433
