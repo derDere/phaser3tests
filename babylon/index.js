@@ -39,7 +39,22 @@ function createScene() {
     }
     spaceship = scene.getMeshByID('_mm1');
     spaceship.addChild(scene.getMeshByID('spaceship'));
-    spaceship.position.y = 2;
+
+    var spaceshipMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+    spaceshipMaterial.diffuseTexture = new BABYLON.Texture("../work/spaceship.png", scene);
+    //myMaterial.specularTexture = new BABYLON.Texture("PATH TO IMAGE", scene);
+    //myMaterial.emissiveTexture = new BABYLON.Texture("PATH TO IMAGE", scene);
+    //myMaterial.ambientTexture = new BABYLON.Texture("PATH TO IMAGE", scene);
+
+    spaceship.material = spaceshipMaterial;
+
+    var spaceDrive = BABYLON.MeshBuilder.CreateSphere('planet', {
+      diameter: 0.1
+    }, scene);
+    spaceDrive.renderingGroupId = 1;
+    spaceDrive.position.x = -3.45;
+    spaceDrive.position.y = 0.35;
+    spaceship.addChild(spaceDrive);
 
     var camera = new BABYLON.ArcRotateCamera('arcCamera',
       BABYLON.Tools.ToRadians(-15),
@@ -54,12 +69,20 @@ function createScene() {
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
 
-    var planet = BABYLON.MeshBuilder.CreateSphere('planet', {diameter: 40000}, scene);
+    var planet = BABYLON.MeshBuilder.CreateSphere('planet', {
+      diameter: 40000
+    }, scene);
     planet.position.x = 3000;
     planet.position.y = -55000;
     planet.position.z = 30000;
     planet.renderingGroupId = 1;
 
+    var planetMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+    planetMaterial.diffuseTexture = new BABYLON.Texture("../images/2k_mars.jpg", scene);
+    planetMaterial.specularTexture = new BABYLON.Texture("../images/2k_mars_s.jpg", scene);
+    planetMaterial.emissiveTexture = new BABYLON.Texture("../images/2k_mars_e.jpg", scene);
+    planetMaterial.ambientTexture = new BABYLON.Texture("../images/2k_mars_a.jpg", scene);
+    planet.material = planetMaterial;
     /*
     // create a built-in "ground" shape;
     var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
@@ -92,6 +115,53 @@ function createScene() {
       restitution: 0.9
     }, scene);
 
+    var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+    particleSystem.particleTexture = new BABYLON.Texture("../images/flare.png", scene);
+    particleSystem.renderingGroupId = 1;
+
+    // Where the particles come from
+    particleSystem.emitter = spaceDrive; // the starting object, the emitter
+    particleSystem.minEmitBox = new BABYLON.Vector3(0, 0, 0); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(0, 0, 0); // To...
+
+    // Colors of all particles
+    particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
+    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
+
+    // Size of each particle (random between...
+    particleSystem.minSize = 0.4;
+    particleSystem.maxSize = 0.5;
+
+    // Life time of each particle (random between...
+    particleSystem.minLifeTime = 0.15;
+    particleSystem.maxLifeTime = 0.2;
+
+    // Emission rate
+    particleSystem.emitRate = 1500;
+
+    // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+    // Set the gravity of all particles
+    particleSystem.gravity = new BABYLON.Vector3(0, 0, 0);
+
+    // Direction of each particle after it has been emitted
+    particleSystem.direction1 = new BABYLON.Vector3(0, 0, 0);
+    particleSystem.direction2 = new BABYLON.Vector3(0, 0, 0);
+
+    // Angular speed, in radians
+    particleSystem.minAngularSpeed = 0;
+    particleSystem.maxAngularSpeed = Math.PI;
+
+    // Speed
+    particleSystem.minEmitPower = 1;
+    particleSystem.maxEmitPower = 3;
+    particleSystem.updateSpeed = 0.005;
+
+    // Start the particle system
+    particleSystem.start();
+
     // run the render loop
     engine.runRenderLoop(() => {
       //if (speed < 3000) speed += 30;
@@ -112,7 +182,8 @@ function createScene() {
 }
 
 document.getElementById('goBtn').addEventListener('click', () => {
-  spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(200000, 0, 0));
+  speed += 3;
+  spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(speed, 0, 0));
 });
 
 // call the createScene function
