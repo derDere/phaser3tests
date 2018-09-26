@@ -47,6 +47,7 @@ function createScene() {
     //myMaterial.ambientTexture = new BABYLON.Texture("PATH TO IMAGE", scene);
 
     spaceship.material = spaceshipMaterial;
+    scene.getMeshByID('spaceship').material = spaceshipMaterial;
 
     var spaceDrive = BABYLON.MeshBuilder.CreateSphere('planet', {
       diameter: 0.1
