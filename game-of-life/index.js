@@ -60,7 +60,7 @@ function create ()
   for (var x = 0; x < WIDTH; x++) {
     var Row = [];
     for (var y = 0; y < HEIGHT; y++) {
-      var rect = new Phaser.Geom.Ellipse(x * SIZE, y * SIZE, SIZE, SIZE);
+      var rect = new Phaser.Geom.Ellipse(x * SIZE, y * SIZE, SIZE-1, SIZE-1);
       Row.push({state:rnd(),next:0,rect:rect});
     }
     console.log('' + Row.length);

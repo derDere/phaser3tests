@@ -81,7 +81,6 @@ function createScene() {
 
     skybox.renderingGroupId = 0;
 
-    /*
     // Enable Physics
     var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
     var physicsPlugin = new BABYLON.CannonJSPlugin();
@@ -92,14 +91,11 @@ function createScene() {
       mass: 1,
       restitution: 0.9
     }, scene);
-    */
-
-    //spaceship.physicsImpostor.applyImpulse(new BABYLON.Vector3(10, 0, 0), spaceship.getAbsolutePosition());
 
     // run the render loop
     engine.runRenderLoop(() => {
-      if (speed < 3000) speed += 30;
-      spaceship.position.x += speed;
+      //if (speed < 3000) speed += 30;
+      //spaceship.position.x += speed;
       //spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(2, 0, 0));
       //spaceship.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 1));
       scene.render();
@@ -114,6 +110,10 @@ function createScene() {
   // return the created scene
   return scene;
 }
+
+document.getElementById('goBtn').addEventListener('click', () => {
+  spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(200000, 0, 0));
+});
 
 // call the createScene function
 var scene = createScene();
