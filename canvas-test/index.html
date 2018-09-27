@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Canvas Test</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      overflow: auto;
+      background: #000 url(../images/demo-bg.png);
+      margin: 0;
+      border: 0 none;
+      color: #fff;
+      font-family: Arial;
+    }
+
+    #backbtn {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #myCanvas {
+      border: 1px solid #d3d3d3;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <table cellspacing="0" cellpadding="0" width="100%" height="100%">
+    <tr>
+      <td align="center" valign="middle">
+        <canvas id="myCanvas" width="800" height="800" />
+      </td>
+    </tr>
+  </table>
+  <a id="backbtn" href="../main.html">Back</a>
+  <script>
+    require('./index.js')
+  </script>
+</body>
+
+</html>

@@ -4,7 +4,9 @@ const WIDTH = 300;
 const HEIGHT = 200;
 const SIZE = 4;
 
-var rnd = function () {
+var rnd = function (x, y) {
+  //var L = ((x+y)%5) == 0;
+  //return L?1:0;
   return ((Math.round(Math.random() * 1000) % 3) == 0?1:0);
 };
 
@@ -61,7 +63,7 @@ function create ()
     var Row = [];
     for (var y = 0; y < HEIGHT; y++) {
       var rect = new Phaser.Geom.Ellipse(x * SIZE, y * SIZE, SIZE-1, SIZE-1);
-      Row.push({state:rnd(),next:0,rect:rect});
+      Row.push({state:rnd(x,y),next:0,rect:rect});
     }
     console.log('' + Row.length);
     Fields.push(Row);
