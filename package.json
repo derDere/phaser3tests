@@ -11,6 +11,7 @@
   "license": "Copyright (C) 2018 by Orbit Logistics Europe GmbH",
   "dependencies": {
     "babylonjs": "^3.3.0-rc.4",
+    "babylonjs-gui": "^3.3.0-rc.4",
     "cannon": "^0.6.2",
     "electron": "^3.0.0",
     "phaser": "^3.13.0",

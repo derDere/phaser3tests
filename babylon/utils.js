@@ -20,13 +20,40 @@ exports.SpaceCam = function(Name, Angel1, Angel2, Distance, Target, scene, canva
     BABYLON.Tools.ToRadians(Angel2),
     Distance, new BABYLON.Vector3(0, 0, 0), scene
   );
+  this.viewport = camera.viewport;
   camera.lockedTarget = Target;
   camera.attachControl(canvas, false);
   camera.maxZ = 1000000000;
 };
 
 exports.facePoint = function(Mesh, TargetVector) {
-  var DeltaVector = TargetVector.subtract(Mesh.position);
-  //Mesh.rotation = Mesh.rotation.add(DeltaVector.normalize());
-  Mesh.translate(DeltaVector.normalize(), 6, BABYLON.Space.LOCAL); /// Is Wrong this will move as expected and not rotate
+  Mesh.lookAt(TargetVector);
+
+  /*var dX = TargetVector.x - Mesh.position.x;
+  var dY = TargetVector.y - Mesh.position.y;
+  var dZ = TargetVector.z - Mesh.position.z;
+
+  var mC = Math.acos(Mesh.rotationQuaternion.z / Mesh.rotationQuaternion.x);
+  var aC = Math.acos(dZ / dX);
+
+  if (aC > Mesh.rotation.y) {
+    Mesh.rotate(BABYLON.Axis.Y, 0.1, BABYLON.Space.LOCAL);
+  } else {
+    Mesh.rotate(BABYLON.Axis.Y, -0.1, BABYLON.Space.LOCAL);
+  }
+
+  console.log(JSON.stringify(Mesh.rotation));*/
+
+
+
+
+  /**
+   * Meh
+   * =========================================================================================
+   * var DeltaVector = TargetVector.subtract(Mesh.position);
+   * DeltaVector.normalize();
+   * //Mesh.rotation = Mesh.rotation.add(DeltaVector.normalize());
+   * //Mesh.translate(DeltaVector.normalize(), 6, BABYLON.Space.LOCAL); /// Is Wrong this will move as expected and not rotate
+   * Mesh.rotate(BABYLON.Axis.Y, -Math.acos(DeltaVector.x / DeltaVector.z), BABYLON.Space.WORLD);
+   */
 };

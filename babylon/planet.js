@@ -10,6 +10,7 @@ exports.Planet = function(Name, Texture, PosX, PosY, PosZ, Size, scene) {
   planet.renderingGroupId = 1;
 
   this.position = planet.position;
+  this.mesh = planet;
 
   var planetMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
   planetMaterial.diffuseTexture = new BABYLON.Texture("../images/2k_" + Texture + ".jpg", scene);
