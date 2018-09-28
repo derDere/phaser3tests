@@ -14,7 +14,7 @@ exports.SpaceShip = function(scene) {
   this.mesh.addChild(mesh_1);
 
   var spaceshipMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
-  spaceshipMaterial.diffuseTexture = new BABYLON.Texture("../work/spaceship.png", scene);
+  spaceshipMaterial.diffuseTexture = new BABYLON.Texture("../images/textures/spaceship.png", scene);
 
   mesh_1.material = spaceshipMaterial;
   mesh_2.material = spaceshipMaterial;

@@ -1,22 +1,18 @@
 var electron = require('electron');
 var {remote, ipcRenedere} = electron;
 const BABYLON = require('babylonjs');
-const GUI = require('babylonjs-gui');
 const BABYLON_OBJ_LOADER = require('./babylon.objFileLoader.js');
 BABYLON_OBJ_LOADER.init(BABYLON);
 const CANNON = require('cannon');
 const OBJECTS = require('./objects.js');
-const {SpaceShip, Planet, SpaceCam, SkyBox, Ui} = OBJECTS;
+const {SpaceShip, Planet, SpaceCam, SkyBox, Ui, SpaceTag} = OBJECTS;
 
 var speed = 0;
 var planetRotation = 0;
 
-var PlanetBtn = document.createElement('button');
-PlanetBtn.innerText = "Planet";
-PlanetBtn.style.position = 'absolute';
-document.body.appendChild(PlanetBtn);
-
 var canvas = document.getElementById('renderCanvas');
+
+var ui = new Ui();
 
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
@@ -47,23 +43,19 @@ function createScene() {
 
     planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
 
+    ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
+
     var skybox = new SkyBox('spacebox', scene);
+
+    scene.registerBeforeRender(function() {
+      planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
+      spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
+      ui.update();
+    });
 
     // run the render loop
     engine.runRenderLoop(() => {
-      planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
-      spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
-
-      var BtnPos = BABYLON.Vector3.Project(planet.mesh.position, BABYLON.Matrix.Identity(), scene.getTransformMatrix(), cam.viewport.toGlobal(engine));
-      PlanetBtn.style.top = Math.floor(BtnPos.y) + 'px';
-      PlanetBtn.style.left = Math.floor(BtnPos.x) + 'px';
-
       scene.render();
-    });
-
-    // the canvas/window resize event handler
-    window.addEventListener('resize', () => {
-      engine.resize();
     });
   });
 
@@ -74,6 +66,11 @@ function createScene() {
   // return the created scene
   return scene;
 }
+
+// the canvas/window resize event handler
+window.addEventListener('resize', () => {
+  engine.resize();
+});
 
 document.getElementById('goBtn').addEventListener('click', () => {
   planetRotation = 0.001;

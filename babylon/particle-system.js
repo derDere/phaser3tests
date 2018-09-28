@@ -3,7 +3,7 @@ const BABYLON = require('babylonjs');
 
 exports.shipDriveParticles = function(scene, emitter) {
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
-  particleSystem.particleTexture = new BABYLON.Texture("../images/flare.png", scene);
+  particleSystem.particleTexture = new BABYLON.Texture("../images/textures/flare.png", scene);
   particleSystem.renderingGroupId = 1;
 
   // Where the particles come from

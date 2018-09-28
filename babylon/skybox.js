@@ -11,7 +11,7 @@ exports.SkyBox = function (Texture, scene) {
   skyboxMaterial.disableLighting = true;
 
   //https://i.pinimg.com/originals/de/38/ad/de38ad4f55903add2fdbe290bcc6ef79.png
-  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("../images/" + Texture, scene, ["_px.png", "_py.png", "_pz.png", "_nx.png", "_ny.png", "_nz.png"]);
+  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("../images/skyboxes/" + Texture, scene, ["_px.png", "_py.png", "_pz.png", "_nx.png", "_ny.png", "_nz.png"]);
   skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 
   skybox.renderingGroupId = 0;
