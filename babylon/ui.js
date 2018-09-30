@@ -98,16 +98,27 @@ exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
 var ContextMenu = function(X, Y, Items) {
   this.MenuEle = document.createElement('div');
   this.MenuEle.className = 'context-menu';
-  this.MenuEle.style.top = X + 'px';
-  this.MenuEle.style.left = Y + 'px';
+  this.MenuEle.style.top = Y + 'px';
+  this.MenuEle.style.left = X + 'px';
   document.body.appendChild(this.MenuEle);
 
   this.addItem = function(Label, Data) {
+    var NewItem = document.createElement('div');
+    NewItem.className = 'context-menu-item';
+    NewItem.innerText = Label;
+    this.MenuEle.appendChild(NewItem);
+  }.bind(this);
 
-  };
-
-  if (Items.length <= 1) {
-
+  if (Items.length == 1) {
+    for(var Key in Items[0]) {
+      if (Key != "_Name_") {
+        this.addItem(Key, Items[0][Key]);
+      }
+    }
+  } else if (Items.length > 1) {
+    for(var Itm of Items) {
+      this.addItem(Itm['_Name_'], Itm);
+    }
   }
 };
 
@@ -123,7 +134,9 @@ exports.Ui = function() {
   var DocumentClickHandler = function(e) {
     if (e.button == 2) {
       var Menus = this.getMenus(e.clientX, e.clientY);
-      var i = 0;
+      if (Menus.length > 0) {
+        var CM = new ContextMenu(e.clientX, e.clientY, Menus);
+      }
     }
   }.bind(this);
   window.addEventListener('mousedown', DocumentClickHandler);
