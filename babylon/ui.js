@@ -95,6 +95,22 @@ exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
   }.bind(this);
 };
 
+var ContextMenu = function(X, Y, Items) {
+  this.MenuEle = document.createElement('div');
+  this.MenuEle.className = 'context-menu';
+  this.MenuEle.style.top = X + 'px';
+  this.MenuEle.style.left = Y + 'px';
+  document.body.appendChild(this.MenuEle);
+
+  this.addItem = function(Label, Data) {
+
+  };
+
+  if (Items.length <= 1) {
+
+  }
+};
+
 exports.Ui = function() {
   this.spaceTags = [];
 
