@@ -3,6 +3,10 @@ const ps = require('./particle-system.js');
 const utils = require('./utils.js');
 
 exports.SpaceShip = function(scene) {
+  this.scene = scene;
+
+  this.target = null;
+
   this.mesh = BABYLON.Mesh.CreateBox("spaceshipAll", 1, scene);
   this.mesh.renderingGroupId = 1;
   this.mesh.isVisible = false;
@@ -19,13 +23,9 @@ exports.SpaceShip = function(scene) {
   mesh_1.material = spaceshipMaterial;
   mesh_2.material = spaceshipMaterial;
 
-  /*
-  this.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, BABYLON.PhysicsImpostor.MeshImpostor, {
-    mass: 1,
-    restitution: 0.9
-  }, scene);
-  this.mesh.physicsImpostor = this.physicsImpostor;
-  */
+  var Pilot = BABYLON.Mesh.CreateBox("pilot", 3, scene);
+  Pilot.renderingGroupId = 1;
+  Pilot.isVisible = false;
 
   var spaceDrive = BABYLON.MeshBuilder.CreateSphere('spaceDrive', {
     diameter: 0.1
@@ -41,6 +41,29 @@ exports.SpaceShip = function(scene) {
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
   this.facePoint = function(TargetVector) {
-    utils.facePoint(this.mesh, TargetVector);
+    Pilot.position = this.mesh.position;
+    Pilot.lookAt(TargetVector);
+
+    var animationQuaternion = new BABYLON.Animation("myAnimation", "rotation", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    // Animation keys
+    var keys = [];
+    keys.push({
+        frame: 0,
+        value: this.mesh.rotation
+    });
+    keys.push({
+        frame: 100,
+        value: Pilot.rotation
+    });
+
+    animationQuaternion.setKeys(keys);
+
+    this.mesh.animations.push(animationQuaternion);
+
+    this.scene.beginAnimation(this.mesh, 0, 100, false);
+  }.bind(this);
+
+  this.update = function() {
   }.bind(this);
 };

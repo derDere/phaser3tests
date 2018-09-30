@@ -29,10 +29,10 @@ function createScene() {
       mesh.renderingGroupId = 1;
     }
 
-    // Enable Physics
-    var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
-    var physicsPlugin = new BABYLON.CannonJSPlugin();
-    scene.enablePhysics(gravityVector, physicsPlugin);
+    // // Enable Physics
+    // var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
+    // var physicsPlugin = new BABYLON.CannonJSPlugin();
+    // scene.enablePhysics(gravityVector, physicsPlugin);
 
     spaceship = new SpaceShip(scene);
 
@@ -48,9 +48,14 @@ function createScene() {
     var skybox = new SkyBox('spacebox', scene);
 
     scene.registerBeforeRender(function() {
+      var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
+
       planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
       spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
-      ui.update();
+
+      spaceship.update();
+
+      ui.update(frustumPlanes);
     });
 
     // run the render loop
