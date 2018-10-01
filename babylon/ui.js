@@ -1,6 +1,15 @@
 const OBJECTS = require('./objects.js');
 const BABYLON = require('babylonjs');
 
+/*****************************************************************************************************************************
+ * Create a Icon in Space to Label Object like Planets, Stations, Ships, Cargos, Asteroinds, Jumpgates and so on.
+ * @param  {Mesh} Mesh   The Mesh of the Labeled Object
+ * @param  {OBJECT.Types} Type   The Type of the Object
+ * @param  {Scene} Scene  The main scene
+ * @param  {Camera} Camera The main camera
+ * @param  {Engine} Engine The main engine
+ * @return {SpaceTag Scope}      The created SpaceTag
+ */
 exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
   this.mesh = Mesh;
   this.type = Type;
@@ -23,7 +32,12 @@ exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
         "10km": "1",
         "20km": "2",
         "50km": "3",
-        "100km": "4"
+        "100km": {
+          "more": "4",
+          "much more": "5",
+          "even more": "6",
+          "com on dude!": "7"
+        }
       },
       "Keep in distance": {
         "5km": "0",
@@ -95,34 +109,117 @@ exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
   }.bind(this);
 };
 
+/**
+ * Gibt an ob ein Knoten einem anderen untergeordnet ist.
+ * @param  {DOMElement}  child   Possible Child Node
+ * @param  {DOMElement}  parent Wana be Parent node
+ * @return {Boolean}        True == Is a child node, False = Is no child of this parent
+ */
+function isChildOf(child, parent) {
+  var parentNode = child.parentNode;
+  while(parentNode != null) {
+    if (parentNode == parent) return true;
+    parentNode = parentNode.parentNode;
+  }
+  return false;
+};
+
+var CurrentContextMenu = null;
+/*****************************************************************************************************************************
+ * Openes a new context menu
+ * @param  {Integer} X     Open Position X
+ * @param  {Integer} Y     Open Position Y
+ * @param  {UI.getMenus} Items  Menu Items of that Point
+ * @return {ContextMenu Scope}       The newly created ContextMenu
+ */
 var ContextMenu = function(X, Y, Items) {
+  if (CurrentContextMenu) CurrentContextMenu.kill();
+
   this.MenuEle = document.createElement('div');
   this.MenuEle.className = 'context-menu';
-  this.MenuEle.style.top = Y + 'px';
-  this.MenuEle.style.left = X + 'px';
   document.body.appendChild(this.MenuEle);
 
-  this.addItem = function(Label, Data) {
+  this.right2left = X > (window.innerWidth / 2);
+  this.bottom2top = Y > (window.innerHeight / 2);
+
+  if (this.right2left) {
+    this.MenuEle.style.right = (window.innerWidth - X) + 'px';
+    this.MenuEle.classList.add('r2l');
+  } else {
+    this.MenuEle.style.left = X + 'px';
+    this.MenuEle.classList.add('l2r');
+  }
+
+  if (this.bottom2top) {
+    this.MenuEle.style.bottom = (window.innerHeight - Y) + 'px';
+    this.MenuEle.classList.add('b2t');
+  } else {
+    this.MenuEle.style.top = Y + 'px';
+    this.MenuEle.classList.add('t2b');
+  }
+
+  var addItem = function(parent, Label, Data) {
     var NewItem = document.createElement('div');
     NewItem.className = 'context-menu-item';
     NewItem.innerText = Label;
-    this.MenuEle.appendChild(NewItem);
+    parent.appendChild(NewItem);
+    if (Data instanceof Object) {
+      var subMenuIcon = document.createElement('img');
+      subMenuIcon.className = 'context-menu-sub-menu-icon';
+      if (this.right2left)
+        subMenuIcon.src = "../images/icons/sub-menu_l.png";
+      else
+        subMenuIcon.src = "../images/icons/sub-menu_r.png";
+      NewItem.appendChild(subMenuIcon);
+      var subMenu = document.createElement('div');
+      subMenu.className = 'context-menu-sub-menu';
+      NewItem.appendChild(subMenu);
+      for (var Key in Data) {
+        addItem(subMenu, Key, Data[Key]);
+      }
+    } else {
+      NewItem.addEventListener('pointerdown', () => {
+        alert(Data);
+        this.kill();
+      });
+    }
   }.bind(this);
 
   if (Items.length == 1) {
     for(var Key in Items[0]) {
       if (Key != "_Name_") {
-        this.addItem(Key, Items[0][Key]);
+        addItem(this.MenuEle, Key, Items[0][Key]);
       }
     }
   } else if (Items.length > 1) {
     for(var Itm of Items) {
-      this.addItem(Itm['_Name_'], Itm);
+      addItem(this.MenuEle, Itm['_Name_'], Itm);
     }
   }
+
+  this.kill = function() {
+    this.MenuEle.parentNode.removeChild(this.MenuEle);
+    CurrentContextMenu = null;
+  }.bind(this);
+
+  var GlobalClickHandler = function(e) {
+    if (isChildOf(e.srcElement, this.MenuEle)) {
+
+    } else {
+      this.kill();
+    }
+  }.bind(this);
+  window.addEventListener('pointerdown', GlobalClickHandler);
+
+  CurrentContextMenu = this;
 };
 
-exports.Ui = function() {
+/*****************************************************************************************************************************
+ * Create a new game UI
+ * @param  {babylon canvas} canvas the game canvas
+ * @return {Ui Scope}        The newly generated game ui
+ */
+exports.Ui = function(canvas) {
   this.spaceTags = [];
 
   this.update = function(frustumPlanes) {
@@ -139,7 +236,8 @@ exports.Ui = function() {
       }
     }
   }.bind(this);
-  window.addEventListener('mousedown', DocumentClickHandler);
+  window.addEventListener('pointerdown', DocumentClickHandler);
+  //canvas.addEventListener('mousedown', DocumentClickHandler);
 
   this.getMenus = function(X, Y) {
     var point = {x:X, y:Y};

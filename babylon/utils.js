@@ -22,6 +22,6 @@ exports.SpaceCam = function(Name, Angel1, Angel2, Distance, Target, scene, canva
   );
   this.viewport = camera.viewport;
   camera.lockedTarget = Target;
-  camera.attachControl(canvas, false);
+  camera.attachControl(canvas, false, false, 1);
   camera.maxZ = 1000000000;
 };

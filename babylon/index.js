@@ -12,7 +12,7 @@ var planetRotation = 0;
 
 var canvas = document.getElementById('renderCanvas');
 
-var ui = new Ui();
+var ui = new Ui(canvas);
 
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
