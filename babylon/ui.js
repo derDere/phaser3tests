@@ -26,25 +26,25 @@ exports.SpaceTag = function(Mesh, Type, Scene, Camera, Engine) {
   this.menu = function() {
     return {
       "_Name_": "Planet",
-      "Approach": "0",
+      "Approach": "approach",
       "Cicle": {
-        "5km": "0",
-        "10km": "1",
-        "20km": "2",
-        "50km": "3",
+        "5km": "cicle:5",
+        "10km": "cicle:10",
+        "20km": "cicle:20",
+        "50km": "cicle:50",
         "100km": {
-          "more": "4",
-          "much more": "5",
-          "even more": "6",
-          "com on dude!": "7"
+          "more": "cicle:m",
+          "much more": "cicle:mm",
+          "even more": "cicle:em",
+          "com on dude!": "cicle:cod"
         }
       },
       "Keep in distance": {
-        "5km": "0",
-        "10km": "1",
-        "20km": "2",
-        "50km": "3",
-        "100km": "4"
+        "5km": "keep:5",
+        "10km": "keep:10",
+        "20km": "keep:20",
+        "50km": "keep:50",
+        "100km": "keep:100"
       }
     };
   };
@@ -132,8 +132,10 @@ var CurrentContextMenu = null;
  * @param  {UI.getMenus} Items  Menu Items of that Point
  * @return {ContextMenu Scope}       The newly created ContextMenu
  */
-var ContextMenu = function(X, Y, Items) {
+var ContextMenu = function(X, Y, Items, wsConnection) {
   if (CurrentContextMenu) CurrentContextMenu.kill();
+
+  this.wsConnection = wsConnection;
 
   this.MenuEle = document.createElement('div');
   this.MenuEle.className = 'context-menu';
@@ -179,7 +181,7 @@ var ContextMenu = function(X, Y, Items) {
       }
     } else {
       NewItem.addEventListener('pointerdown', () => {
-        alert(Data);
+        this.wsConnection.send(Data);
         this.kill();
       });
     }
@@ -219,8 +221,9 @@ var ContextMenu = function(X, Y, Items) {
  * @param  {babylon canvas} canvas the game canvas
  * @return {Ui Scope}        The newly generated game ui
  */
-exports.Ui = function(canvas) {
+exports.Ui = function(canvas, wsConnection) {
   this.spaceTags = [];
+  this.wsConnection = wsConnection;
 
   this.update = function(frustumPlanes) {
     for (var sT of this.spaceTags) {
@@ -232,7 +235,7 @@ exports.Ui = function(canvas) {
     if (e.button == 2) {
       var Menus = this.getMenus(e.clientX, e.clientY);
       if (Menus.length > 0) {
-        var CM = new ContextMenu(e.clientX, e.clientY, Menus);
+        var CM = new ContextMenu(e.clientX, e.clientY, Menus, wsConnection);
       }
     }
   }.bind(this);

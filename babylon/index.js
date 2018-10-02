@@ -7,12 +7,29 @@ const CANNON = require('cannon');
 const OBJECTS = require('./objects.js');
 const {SpaceShip, Planet, SpaceCam, SkyBox, Ui, SpaceTag} = OBJECTS;
 
+var wsConnection = new WebSocket('ws://127.0.0.1:1337');
+wsConnection.onopen = function () {
+  console.log('ws open');
+};
+wsConnection.onerror = function (error) {
+  console.log('ws error: ' + JSON.stringify(error));
+};
+wsConnection.onmessage = function (message) {
+  console.log(message);
+  try {
+    var json = JSON.parse(message.data);
+  } catch (e) {
+    console.log('This doesn\'t look like a valid JSON: ', message.data);
+    return;
+  }
+};
+
 var speed = 0;
 var planetRotation = 0;
 
 var canvas = document.getElementById('renderCanvas');
 
-var ui = new Ui(canvas);
+var ui = new Ui(canvas, wsConnection);
 
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
