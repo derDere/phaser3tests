@@ -2,6 +2,8 @@ const WIDTH = 100;
 const HEIGHT = 100;
 const SIZE = 8;
 
+//https://de.wikipedia.org/wiki/Malbolge
+
 function rnd(x, y) {
   var R = (Math.round(Math.random() * 1000) % 3) == 0;
   return R ? 1 : 0;
