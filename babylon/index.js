@@ -8,8 +8,9 @@ const OBJECTS = require('./objects.js');
 const {SpaceShip, Planet, SpaceCam, SkyBox, Ui, SpaceTag} = OBJECTS;
 
 var wsConnection = new WebSocket('ws://127.0.0.1:1337');
-wsConnection.onopen = function () {
+/*wsConnection.onopen = function () {
   console.log('ws open');
+  wsConnection.send(JSON.stringify({login:1}));
 };
 wsConnection.onerror = function (error) {
   console.log('ws error: ' + JSON.stringify(error));
@@ -22,10 +23,7 @@ wsConnection.onmessage = function (message) {
     console.log('This doesn\'t look like a valid JSON: ', message.data);
     return;
   }
-};
-
-var speed = 0;
-var planetRotation = 0;
+};*/
 
 var canvas = document.getElementById('renderCanvas');
 
@@ -34,51 +32,46 @@ var ui = new Ui(canvas, wsConnection);
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
 
-var spaceship, planet;
-
 // createScene function that creates and return the scene
 function createScene() {
   // create a basic BJS Scene object
   var scene = new BABYLON.Scene(engine);
+  /*for (var mesh of scene.meshes) {
+    mesh.renderingGroupId = 1;
+  }*/
 
-  BABYLON.SceneLoader.Append("../assets/", "spaceship.obj", scene, function(scene) {
-    for (var mesh of scene.meshes) {
-      mesh.renderingGroupId = 1;
-    }
+  // // Enable Physics
+  // var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
+  // var physicsPlugin = new BABYLON.CannonJSPlugin();
+  // scene.enablePhysics(gravityVector, physicsPlugin);
 
-    // // Enable Physics
-    // var gravityVector = new BABYLON.Vector3(0, 0, 0); //-9.81, 0);
-    // var physicsPlugin = new BABYLON.CannonJSPlugin();
-    // scene.enablePhysics(gravityVector, physicsPlugin);
+  //spaceship = new SpaceShip(scene);
 
-    spaceship = new SpaceShip(scene);
+  var cam = new SpaceCam('arcCamera', -15, 75, 20.0, scene, canvas);
 
-    var cam = new SpaceCam('arcCamera', -15, 75, 20.0, spaceship.mesh, scene, canvas);
+  // create a basic light, aiming 0,1,0 - meaning, to the sky
+  var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
 
-    // create a basic light, aiming 0,1,0 - meaning, to the sky
-    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
+  //planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
 
-    planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
+  //ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
 
-    ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
+  var skybox = new SkyBox('spacebox', scene);
 
-    var skybox = new SkyBox('spacebox', scene);
+  scene.registerBeforeRender(function() {
+    var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
 
-    scene.registerBeforeRender(function() {
-      var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
+    //planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
+    //spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
 
-      planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
-      spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
+    //spaceship.update();
 
-      spaceship.update();
+    ui.update(frustumPlanes);
+  });
 
-      ui.update(frustumPlanes);
-    });
-
-    // run the render loop
-    engine.runRenderLoop(() => {
-      scene.render();
-    });
+  // run the render loop
+  engine.runRenderLoop(() => {
+    scene.render();
   });
 
   if (remote.process.argv.indexOf("debug") > -1) {
@@ -94,12 +87,14 @@ window.addEventListener('resize', () => {
   engine.resize();
 });
 
+/*
 document.getElementById('goBtn').addEventListener('click', () => {
-  planetRotation = 0.001;
-  speed += 3;
-  spaceship.facePoint(planet.position);
+  //planetRotation = 0.001;
+  //speed += 3;
+  //spaceship.facePoint(planet.position);
   //spaceship.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(speed, 0, 0));
 });
+*/
 
 // call the createScene function
 var scene = createScene();

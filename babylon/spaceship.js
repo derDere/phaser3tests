@@ -5,6 +5,9 @@ const utils = require('./utils.js');
 exports.SpaceShip = function(scene) {
   this.scene = scene;
 
+  BABYLON.SceneLoader.Append("../assets/", "spaceship.obj", scene, function(scene) {
+  });
+
   this.target = null;
 
   this.mesh = BABYLON.Mesh.CreateBox("spaceshipAll", 1, scene);

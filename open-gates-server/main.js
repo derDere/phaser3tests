@@ -8,18 +8,36 @@ var wsServer = new WEBSOCKET.server({
   httpServer: httpServer
 });
 
-wsServer.on('request', (webSocketRequest) => {
-  var connection = webSocketRequest.accept(null, webSocketRequest.origin);
+var sessions = [];
 
-  // This is the most important callback for us, we'll handle
-  // all messages from users here.
-  connection.on('message', function(message) {
+var Session = function (connection) {
+  console.log('New Client');
+  this.connection = connection;
+  this.login = false;
+
+  var MessageHandler = function(message) {
     if (message.type === 'utf8') {
-      console.log(message);
-    }
-  });
+      var obj = JSON.parse(message.utf8Data);
+      console.log(JSON.stringify(obj));
+      if (this.login) {
 
-  connection.on('close', function(connection) {
-    console.log('bye bye');
-  });
+      } else {
+
+      }
+    }
+  }.bind(this);
+
+  var CloseHandler = function(connection) {
+    var index = sessions.indexOf(this);
+    if (index != -1)
+      sessions.splice(index, 1);
+    console.log(`bye bye ${index}`);
+  }.bind(this);
+
+  this.connection.on('message', MessageHandler);
+  this.connection.on('close', CloseHandler);
+};
+
+wsServer.on('request', (webSocketRequest) => {
+  sessions.push(new Session(webSocketRequest.accept(null, webSocketRequest.origin)));
 });

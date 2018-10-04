@@ -1,33 +1,42 @@
+const fs = require('fs');
+
 exports.startSystem = '62ba444e-38f0-438e-80a4-0b26c3e4eb1c';
 
-exports.systems = {
-  '62ba444e-38f0-438e-80a4-0b26c3e4eb1c': {
-    Name: "Schedir",
-    Planets: [
-      '75e30b22-25b0-4374-80d4-9fff64386d6d'
-    ],
-    Stations: [],
-    Gates: [],
-    AsteroidBelts: []
-  }
+exports.worldFolder = __dirname + '/world/';
+
+var LoadedObjects = {};
+
+var LoadFrom = function(uuid, subFolder, callback) {
+  if (uuid in LoadedObjects)
+    callback(LoadedObjects[uuid]);
+  else
+    fs.readFile(exports.worldFolder + subFolder + uuid + '.json', (err, data) => {
+      if (err)
+        console.log(JSON.stringify(err));
+      else {
+        var jj = JSON.parse(data);
+        LoadedObjects[uuid] = jj;
+        callback(jj);
+      }
+    })
 };
 
-exports.planets = {
-  '75e30b22-25b0-4374-80d4-9fff64386d6d': {
-    Name: "Keman",
-    System: '62ba444e-38f0-438e-80a4-0b26c3e4eb1c',
-    Diameter: 40000,
-    Texture: 'mars',
-    Position: {
-      x: 3000,
-      y: -55000,
-      z: -30000
-    }
-  }
+exports.systems = function(uuid, callback) {
+  LoadFrom(uuid, 'systems/', callback);
 };
 
-exports.stations = {};
+exports.planets = function(uuid, callback) {
+  LoadFrom(uuid, 'planets/', callback);
+};
 
-exports.gates = {};
+exports.stations = function(uuid, callback) {
+  LoadFrom(uuid, 'stations/', callback);
+};
 
-exports.asteroidBelts = {};
+exports.gates = function(uuid, callback) {
+  LoadFrom(uuid, 'gates/', callback);
+};
+
+exports.asteroidBelts = function(uuid, callback) {
+  LoadFrom(uuid, 'asteroidBelts/', callback);
+};

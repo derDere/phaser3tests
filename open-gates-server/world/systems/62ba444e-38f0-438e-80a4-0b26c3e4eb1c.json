@@ -1,0 +1,13 @@
+{
+  "Name": "Schedir",
+  "Planets": [
+    "75e30b22-25b0-4374-80d4-9fff64386d6d"
+  ],
+  "Stations": [],
+  "Gates": [],
+  "AsteroidBelts": [],
+  "Position": {
+    "x": 50.0,
+    "y": 50.0
+  }
+}

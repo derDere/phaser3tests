@@ -109,13 +109,52 @@
       .r2l .context-menu-sub-menu-icon {
         left: 5px;
       }
+
+    #loginScreen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      margin: 0 0 0 -125px;
+    }
+
+    #loginScreen span, #loginScreen input {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      width: 100%;
+      vertical-align: middle;
+      border: 1px solid #fff;
+      display: block;
+      margin: 0 0 15px 0;
+      padding: 0;
+      border-radius: 15px;
+      outline: none;
+    }
+
+    #user, #pass {
+      background: #000;
+      color: #fff;
+    }
+
+    #loginBtn {
+      background: #ffffffaf;
+      color: #000;
+    }
+      #loginBtn:hover {
+        background: #fff;
+      }
   </style>
 </head>
 
 <body>
   <canvas id="renderCanvas"></canvas>
   <a id="backbtn" href="../main.html">Back</a>
-  <a id="goBtn" href="#">Accelerate</a>
+  <div id="loginScreen">
+    <input id="user" type="text" />
+    <input id="pass" type="password" />
+    <span id="loginBtn">Login</span>
+  </div>
   <script>
     require('./index.js');
   </script>

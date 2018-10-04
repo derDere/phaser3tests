@@ -1,0 +1,11 @@
+{
+  "Name": "Keman",
+  "System": "62ba444e-38f0-438e-80a4-0b26c3e4eb1c",
+  "Diameter": 40000,
+  "Texture": "mars",
+  "Position": {
+    "x": 3000,
+    "y": -55000,
+    "z": -30000
+  }
+}

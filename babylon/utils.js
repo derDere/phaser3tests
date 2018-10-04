@@ -14,14 +14,14 @@ exports.FreeCam = function(Name, Pos, View, Scene, Canvas) {
   this.cam.keysRight.push(68); //D
 };
 
-exports.SpaceCam = function(Name, Angel1, Angel2, Distance, Target, scene, canvas) {
+exports.SpaceCam = function(Name, Angel1, Angel2, Distance, scene, canvas) {
   var camera = new BABYLON.ArcRotateCamera(Name,
     BABYLON.Tools.ToRadians(Angel1),
     BABYLON.Tools.ToRadians(Angel2),
     Distance, new BABYLON.Vector3(0, 0, 0), scene
   );
   this.viewport = camera.viewport;
-  camera.lockedTarget = Target;
+  //camera.lockedTarget = Target;
   camera.attachControl(canvas, false, false, 1);
   camera.maxZ = 1000000000;
 };
