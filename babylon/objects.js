@@ -3,6 +3,7 @@ const utils = require('./utils.js');
 const planet = require('./planet.js');
 const skybox = require('./skybox.js');
 const ui = require('./ui.js');
+const game = require('./game.js');
 
 exports.Planet = planet.Planet;
 exports.FreeCam = utils.FreeCam;
@@ -11,6 +12,7 @@ exports.SpaceShip = spaceship.SpaceShip;
 exports.SkyBox = skybox.SkyBox;
 exports.Ui = ui.Ui;
 exports.SpaceTag = ui.SpaceTag;
+exports.Game = game.Game;
 
 exports.Types = new (function() {
   this.PLANET =     {id:0, icon:'planet'},

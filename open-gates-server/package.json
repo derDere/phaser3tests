@@ -1,0 +1,17 @@
+{
+  "name": "open-gates-server",
+  "version": "1.0.0",
+  "description": "gameserver",
+  "main": "main.js",
+  "scripts": {
+    "test": "node . debug"
+  },
+  "author": "Phillip Deremer",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "http": "0.0.0",
+    "md5": "^2.2.1",
+    "websocket": "^1.0.28"
+  }
+}

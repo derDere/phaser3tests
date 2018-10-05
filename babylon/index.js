@@ -5,9 +5,9 @@ const BABYLON_OBJ_LOADER = require('./babylon.objFileLoader.js');
 BABYLON_OBJ_LOADER.init(BABYLON);
 const CANNON = require('cannon');
 const OBJECTS = require('./objects.js');
-const {SpaceShip, Planet, SpaceCam, SkyBox, Ui, SpaceTag} = OBJECTS;
+const {SpaceShip, Planet, SpaceCam, SkyBox, Ui, SpaceTag, Game} = OBJECTS;
 
-var wsConnection = new WebSocket('ws://127.0.0.1:1337');
+//var wsConnection = new WebSocket('ws://127.0.0.1:1337');
 /*wsConnection.onopen = function () {
   console.log('ws open');
   wsConnection.send(JSON.stringify({login:1}));
@@ -27,7 +27,7 @@ wsConnection.onmessage = function (message) {
 
 var canvas = document.getElementById('renderCanvas');
 
-var ui = new Ui(canvas, wsConnection);
+var ui = new Ui(canvas);
 
 // load the 3D engine
 var engine = new BABYLON.Engine(canvas, true);
@@ -98,3 +98,5 @@ document.getElementById('goBtn').addEventListener('click', () => {
 
 // call the createScene function
 var scene = createScene();
+
+var game = new Game(engine, scene, ui);

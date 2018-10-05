@@ -1,0 +1,191 @@
+html,
+body {
+  user-select: none;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+  font-size: 12px;
+}
+
+#renderCanvas {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#backbtn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+#goBtn {
+  position: absolute;
+  left: 200px;
+  top: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.space-tag {
+  position: absolute;
+}
+
+.context-menu {
+  position: absolute;
+  background: #f0f3;
+}
+
+.context-menu-item {
+  position: relative;
+  padding: 2px 20px 2px 8px;
+  color: #ddd;
+  background: #000000C0;
+  border: 1px solid #17A;
+  margin: 1px 0 0 1px;
+  font-size: 12px;
+  cursor: pointer;
+  height: 20px;
+  line-height: 20px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+  .r2l .context-menu-item {
+    padding: 2px 8px 2px 20px;
+  }
+
+.context-menu-item:hover {
+  border: 1px solid #6CF;
+  color: #fff;
+  background: #003070;
+}
+
+.context-menu-sub-menu {
+  position: absolute;
+  display: none;
+}
+  .l2r .context-menu-sub-menu {
+    left: 100%;
+    padding: 0 0 0 1px;
+  }
+  .r2l .context-menu-sub-menu {
+    right: 100%;
+    padding: 0 2px 0 0;
+  }
+  .t2b .context-menu-sub-menu {
+    top: -2px;
+  }
+  .b2t .context-menu-sub-menu {
+    bottom: -1px;
+  }
+
+.context-menu-item:hover > .context-menu-sub-menu {
+  display: block;
+}
+
+.context-menu-sub-menu-icon {
+  position: absolute;
+  top: 7px;
+  border: 0 none;
+}
+  .l2r .context-menu-sub-menu-icon {
+    right: 5px;
+  }
+  .r2l .context-menu-sub-menu-icon {
+    left: 5px;
+  }
+
+#loginScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250px;
+  margin: 0 0 0 -125px;
+}
+
+#loginScreen span, #loginScreen input {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 100%;
+  vertical-align: middle;
+  border: 1px solid #fff;
+  display: block;
+  margin: 0 0 15px 0;
+  padding: 0;
+  border-radius: 15px;
+  outline: none;
+}
+
+#user, #pass {
+  background: #000;
+  color: #fff;
+}
+
+#loginBtn {
+  background: #ffffffaf;
+  color: #000;
+}
+  #loginBtn:hover {
+    background: #fff;
+  }
+
+.popup {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #777;
+  color: #0Af;
+  border: 1px solid #fff;
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+.charSelect {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 300px;
+  border: 1px solid #ffffff7f;
+  background: #ffffff1f;
+  padding: 0 0 60px 0;
+}
+
+.charSelect #newCharBtn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border: 1px solid #fff;
+  background: #ffffff7f;
+  color: #000;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+  .charSelect #newCharBtn:hover {
+    background: #fff;
+  }
+
+.charSelect .charBtn {
+  color: #00AFFF;
+  padding: 10px 20px;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+}
+  .charSelect .charBtn:hover {
+    background: #ffffff3f;
+  }
+
+.createCharScreen {
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+}
+
+.createCharScreen #createNewCharBtn {
+  background: #fff;
+}
