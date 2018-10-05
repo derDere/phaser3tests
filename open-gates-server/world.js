@@ -7,6 +7,43 @@ exports.startSystem = '62ba444e-38f0-438e-80a4-0b26c3e4eb1c';
 exports.worldFolder = __dirname + '/world/';
 exports.accountFolder = __dirname + '/accounts/';
 exports.charsFolder = __dirname + '/chars/';
+exports.typesFolder = __dirname + '/types/';
+
+var LoadedObjects = {};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Tools                                                                                                    //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var loadTypeFrom = function(uuid, dir, callback) {
+  if (uuid in LoadedObjects) {
+    callback(LoadedObjects[uuid]);
+  } else {
+    fs.readFile(exports.typesFolder + dir + uuid + '.json', (err, data) => {
+      if (err) {
+        console.log(JSON.stringify(err));
+      } else {
+        var typeObj = JSON.parse(data);
+        LoadedObjects[uuid] = typeObj;
+        callback(LoadedObjects[uuid]);
+      }
+    });
+  }
+};
+
+exports.loadShipType = function(uuid, callback) {
+  loadTypeFrom(uuid, 'ships/', callback);
+};
+
+exports.loadToolType = function(uuid, callback) {
+  loadTypeFrom(uuid, 'tools/', callback);
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Account Tools                                                                                                 //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.saveAccount = function(account) {
   var AccData = Object.assign({}, account);
@@ -26,7 +63,7 @@ exports.createNewChar = function(account, Data, callback) {
   fs.writeFile(exports.charsFolder + Data + '.json', JSON.stringify(charData, null, 2), {flag:'wx'}, (err) => {
     if (err) {
       if(err.code == "EEXIST") {
-        callback({a:'popup',d:['This character name allready exists!']});  
+        callback({a:'popup',d:['This character name allready exists!']});
       } else {
         console.log(JSON.stringify(err));
       }
@@ -80,7 +117,10 @@ exports.loadAccount = function(Username, Password, callback) {
   });
 };
 
-var LoadedObjects = {};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// World Tools                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var LoadFrom = function(uuid, subFolder, callback) {
   if (uuid in LoadedObjects)

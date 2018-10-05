@@ -36,6 +36,7 @@ var engine = new BABYLON.Engine(canvas, true);
 function createScene() {
   // create a basic BJS Scene object
   var scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color3(0, 0, 0);
   /*for (var mesh of scene.meshes) {
     mesh.renderingGroupId = 1;
   }*/
@@ -61,6 +62,10 @@ function createScene() {
   scene.registerBeforeRender(function() {
     var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
 
+    if (ui.loginScreen || ui.charSelectScreen  || ui.createCharScreen) {
+      skybox.mesh.rotation.y += 0.001;
+      skybox.mesh.rotation.x += 0.001;
+    }
     //planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
     //spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
 

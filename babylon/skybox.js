@@ -2,6 +2,7 @@ const BABYLON = require('babylonjs');
 
 exports.SkyBox = function (Texture, scene) {
   var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, scene);
+  this.mesh = skybox;
   var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
   skyboxMaterial.backFaceCulling = false;
   skyboxMaterial.disableLighting = true;
