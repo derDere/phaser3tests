@@ -243,7 +243,11 @@ var CharSelectScreen = function(ui, data) {
   for(var char of this.data.chars) {
     var CharBtn = document.createElement('div');
     CharBtn.className = "charBtn";
+    CharBtn.dataset.char = char.name;
     CharBtn.innerText = char.name;
+    CharBtn.addEventListener('click', (e) => {
+      this.ui.game.send({c:'selectChar',d:e.srcElement.dataset.char});
+    });
     this.ele.appendChild(CharBtn);
   }
 
@@ -343,6 +347,15 @@ exports.Ui = function(canvas) {
   this.loginScreen = null;
   this.charSelectScreen = null;
   this.createCharScreen = null;
+  this.loadingScreen = document.getElementById('loadingScreen');
+
+  this.setLoadingScreen = function(ShowHide) {
+    if (ShowHide) {
+      this.loadingScreen.style.display = 'block';
+    } else {
+      this.loadingScreen.style.display = 'none';
+    }
+  }.bind(this);
 
   this.setLoginScreen = function (ShowHide) {
     if(ShowHide) {
@@ -352,7 +365,7 @@ exports.Ui = function(canvas) {
       if(this.loginScreen)
         this.loginScreen.kill();
     }
-  };
+  }.bind(this);
 
   this.setCharSelect = function (ShowData) {
     if(ShowData) {
@@ -362,7 +375,7 @@ exports.Ui = function(canvas) {
       if(this.charSelectScreen)
         this.charSelectScreen.kill();
     }
-  };
+  }.bind(this);
 
   this.setCreateCharScreen = function (ShowHide) {
     if(ShowHide) {
@@ -372,11 +385,11 @@ exports.Ui = function(canvas) {
       if(this.createCharScreen)
         this.createCharScreen.kill();
     }
-  };
+  }.bind(this);
 
   this.setGame = function(Game) {
     this.game = Game;
-    this.loginScreen = new LoginScreen(this);
+    //this.loginScreen = new LoginScreen(this);
   }.bind(this);
 
   this.login = function(Username, Password) {

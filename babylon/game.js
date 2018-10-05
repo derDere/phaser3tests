@@ -1,9 +1,11 @@
 
 exports.Game = function(engine, scene, ui) {
-  this.connection = new WebSocket('ws://127.0.0.1:1337');
   this.engine = engine;
   this.scene = scene;
   this.ui = ui;
+  this.ui.setGame(this);
+
+  this.connection = new WebSocket('ws://127.0.0.1:1337');
 
   this.on = function(event, callback) {
     switch (event) {
@@ -49,6 +51,9 @@ exports.Game = function(engine, scene, ui) {
         case 'popup':
             this.ui.popup(msg.d);
           break;
+        case 'loading':
+            this.ui.setLoadingScreen(msg.d);
+          break;
       }
     } catch (e) {
       console.log('This doesn\'t look like a valid JSON: ', message.data);
@@ -59,6 +64,4 @@ exports.Game = function(engine, scene, ui) {
   this.send = function(Data) {
     this.connection.send(JSON.stringify(Data));
   }.bind(this);
-
-  this.ui.setGame(this);
 };

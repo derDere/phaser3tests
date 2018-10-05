@@ -22,6 +22,11 @@ var Session = function (connection) {
     this.connection.send(JSON.stringify(Data));
   }.bind(this);
 
+  setTimeout(function() {
+    this.send({a:'loading',d:0});
+    this.send({a:'login',d:1});
+  }.bind(this), 2000);
+
   var MessageHandler = function(message) {
     if (message.type === 'utf8') {
       var obj = JSON.parse(message.utf8Data);
@@ -53,6 +58,15 @@ var Session = function (connection) {
               this.send({a:'charCreate',d:0});
             }
           });
+        }
+        if (obj.c == 'selectChar') {
+          if (this.account.chars.indexOf(obj.d) != -1) {
+            this.send({a:'charSelect',d:0});
+            this.send({a:'loading',d:1});
+            /////////////////////////////////////////////////////////////////////////
+            console.log("Loading scene data");
+            /////////////////////////////////////////////////////////////////////////
+          }
         }
       } else {
 
