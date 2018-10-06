@@ -24,7 +24,7 @@ var Session = function (connection) {
 
   setTimeout(function() {
     this.send({a:'loading',d:0});
-    this.send({a:'login',d:1});
+    //this.send({a:'login',d:1});
   }.bind(this), 2000);
 
   var MessageHandler = function(message) {

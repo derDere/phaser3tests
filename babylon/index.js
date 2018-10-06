@@ -46,7 +46,7 @@ function createScene() {
   // var physicsPlugin = new BABYLON.CannonJSPlugin();
   // scene.enablePhysics(gravityVector, physicsPlugin);
 
-  //spaceship = new SpaceShip(scene);
+  var spaceship = new SpaceShip(scene);
 
   var cam = new SpaceCam('arcCamera', -15, 75, 20.0, scene, canvas);
 
