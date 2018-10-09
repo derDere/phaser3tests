@@ -1,7 +1,7 @@
 const BABYLON = require('babylonjs');
 
 
-exports.shipDriveParticles = function(scene, emitter) {
+exports.shipDriveParticles = function(scene, emitter, scale) {
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
   particleSystem.particleTexture = new BABYLON.Texture("../images/textures/flare.png", scene);
   particleSystem.renderingGroupId = 1;
@@ -19,6 +19,12 @@ exports.shipDriveParticles = function(scene, emitter) {
   // Size of each particle (random between...
   particleSystem.minSize = 0.4;
   particleSystem.maxSize = 0.5;
+
+  particleSystem.minScaleX = scale.x;
+  particleSystem.maxScaleX = scale.x;
+
+  particleSystem.minScaleY = scale.y;
+  particleSystem.maxScaleY = scale.y;
 
   // Life time of each particle (random between...
   particleSystem.minLifeTime = 0.15;
@@ -39,7 +45,7 @@ exports.shipDriveParticles = function(scene, emitter) {
 
   // Angular speed, in radians
   particleSystem.minAngularSpeed = 0;
-  particleSystem.maxAngularSpeed = Math.PI;
+  particleSystem.maxAngularSpeed = 0; //Math.PI;
 
   // Speed
   particleSystem.minEmitPower = 1;

@@ -5,6 +5,7 @@ exports.FreeCam = function(Name, Pos, View, Scene, Canvas) {
   this.cam = new BABYLON.FreeCamera(Name, Pos, Scene);
   // target the camera to the View
   this.cam.setTarget(View);
+  this.setTarget = this.cam.setTarget;
   // attach the camera to the canvas
   this.cam.attachControl(Canvas, false);
   //Set Movement Keys
@@ -22,6 +23,9 @@ exports.SpaceCam = function(Name, Angel1, Angel2, Distance, scene, canvas) {
   );
   this.viewport = camera.viewport;
   //camera.lockedTarget = Target;
+  this.target = function(Mesh) {
+    camera.lockedTarget = Mesh;
+  }.bind(this);
   camera.attachControl(canvas, false, false, 1);
   camera.maxZ = 1000000000;
 };

@@ -49,15 +49,18 @@ function createScene() {
   var spaceship = new SpaceShip(scene);
 
   var cam = new SpaceCam('arcCamera', -15, 75, 20.0, scene, canvas);
+  cam.target(spaceship.mesh);
 
   // create a basic light, aiming 0,1,0 - meaning, to the sky
   var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
 
-  //planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
+  var planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
 
   //ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
 
   var skybox = new SkyBox('spacebox', scene);
+
+  spaceship.facePoint(planet.position);
 
   scene.registerBeforeRender(function() {
     var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
@@ -66,8 +69,8 @@ function createScene() {
       skybox.mesh.rotation.y += 0.001;
       skybox.mesh.rotation.x += 0.001;
     }
-    //planet.mesh.rotate(BABYLON.Axis.Y, planetRotation, BABYLON.Space.LOCAL);
-    //spaceship.mesh.translate(BABYLON.Axis.Z, -speed, BABYLON.Space.LOCAL);
+    planet.mesh.rotate(BABYLON.Axis.Y, 0.001, BABYLON.Space.LOCAL);
+    spaceship.mesh.translate(BABYLON.Axis.Z, -0.1, BABYLON.Space.LOCAL);
 
     //spaceship.update();
 
