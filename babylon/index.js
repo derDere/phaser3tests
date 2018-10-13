@@ -55,12 +55,13 @@ function createScene() {
   var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 1), scene);
 
   var planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
+  window.planet = planet;
 
   //ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
 
   var skybox = new SkyBox('spacebox', scene);
 
-  spaceship.facePoint(planet.position);
+  //spaceship.facePoint(planet.position);
 
   scene.registerBeforeRender(function() {
     var frustumPlanes = BABYLON.Frustum.GetPlanes(scene.getTransformMatrix());
@@ -70,9 +71,13 @@ function createScene() {
       skybox.mesh.rotation.x += 0.001;
     }
     planet.mesh.rotate(BABYLON.Axis.Y, 0.001, BABYLON.Space.LOCAL);
-    spaceship.mesh.translate(BABYLON.Axis.Z, -0.1, BABYLON.Space.LOCAL);
+    //spaceship.mesh.translate(BABYLON.Axis.Z, -0.1, BABYLON.Space.LOCAL);
 
     //spaceship.update();
+    if (spaceship.Tools.length >= 2)
+      spaceship.Tools[1].lookAt(planet.position);
+    //  spaceship.Tools[1].slot.lookAt(planet.position);
+
 
     ui.update(frustumPlanes);
   });

@@ -3,6 +3,7 @@ const md5 = require('md5');
 const async = require("async");
 
 exports.startSystem = '62ba444e-38f0-438e-80a4-0b26c3e4eb1c';
+exports.startShip = 'af6a4d8d-8fbd-481f-b94a-5145ee0c11fd';
 
 exports.worldFolder = __dirname + '/world/';
 exports.accountFolder = __dirname + '/accounts/';
@@ -58,7 +59,17 @@ exports.saveAccount = function(account) {
 
 exports.createNewChar = function(account, Data, callback) {
   var charData = {
-    name: Data
+    name: Data,
+    location: {
+      s: exports.startSystem,
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    ship: {
+      type: exports.startShip,
+      tools: []
+    }
   };
   fs.writeFile(exports.charsFolder + Data + '.json', JSON.stringify(charData, null, 2), {flag:'wx'}, (err) => {
     if (err) {

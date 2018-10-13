@@ -1,5 +1,23 @@
 const BABYLON = require('babylonjs');
 
+var LoadedMeshs = {};
+var LoadedMeshsCount = {};
+
+exports.loadMesh = function(Name, Scene, Args, callback) {
+  if (Name in LoadedMeshs) {
+    var NewMesh = LoadedMeshs[Name].clone(Name + ':' + LoadedMeshsCount[Name]);
+    LoadedMeshsCount[Name] += 1;
+    callback(Scene, Args, NewMesh);
+  } else {
+    BABYLON.SceneLoader.Append("../assets/", Name + ".babylon", Scene, function(scene) {
+      var NewMesh = scene.meshes[scene.meshes.length - 1];
+      LoadedMeshs[Name] = NewMesh;
+      LoadedMeshsCount[Name] = 1;
+      callback(scene, Args, NewMesh);
+    });
+  }
+};
+
 exports.FreeCam = function(Name, Pos, View, Scene, Canvas) {
   // create a FreeCamera, and set its position to Pos
   this.cam = new BABYLON.FreeCamera(Name, Pos, Scene);

@@ -4,7 +4,7 @@ const utils = require('./utils.js');
 
 exports.SpaceShip = function(scene) {
   this.scene = scene;
-
+  this.Tools = [];
   this.target = null;
 
   this.mesh = BABYLON.Mesh.CreateBox("spaceshipAll", 1, scene);
@@ -28,6 +28,67 @@ exports.SpaceShip = function(scene) {
     this.shipMesh.renderingGroupId = 1;
 
     this.shipMesh.material = spaceshipMaterial;
+
+    var Tools = [
+      {
+        x: 0.8,
+        y: 1.3,
+        z: 0,
+        r: 0,
+        slot: null
+      },
+      {
+        x: 0.8,
+        y: -1.3,
+        z: 0,
+        r: Math.PI,
+        slot: null
+      }
+    ];
+    //this.Tools = Tools;
+    for (var tool of Tools) {
+      var toolSlot = BABYLON.MeshBuilder.CreateSphere('toolSlot', {
+        diameter: 0.1
+      }, scene);
+      tool.slot = toolSlot;
+      toolSlot.renderingGroupId = 1;
+      //toolSlot.scaling.x = 100;
+      toolSlot.isVisible = false;
+      toolSlot.position.x = tool.x;
+      toolSlot.position.y = tool.y;
+      toolSlot.position.z = tool.z;
+      this.shipMesh.addChild(toolSlot);
+      this.Tools.push(toolSlot);
+
+      utils.loadMesh("kanon1", scene, {toolSlot: toolSlot, tool: tool}, function(scene, args, mesh) {
+        mesh.renderingGroupId = 1;
+        mesh.rotate(BABYLON.Axis.Z, args.tool.r, BABYLON.Space.LOCAL);
+
+        args.toolSlot.addChild(mesh);
+        mesh.position.x = 0;
+        mesh.position.y = 0;
+        mesh.position.z = 0;
+
+        var toolMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        toolMaterial.diffuseTexture = new BABYLON.Texture("../images/textures/kanon1.png", scene);
+        toolMaterial.specularTexture = new BABYLON.Texture("../images/textures/kanon1_s.png", scene);
+        mesh.material = toolMaterial;
+      }); /*
+      BABYLON.SceneLoader.Append("../assets/", "kanon1.babylon", scene, function(scene) {
+        var kanonMesh = scene.getMeshByID('kanon1');
+        kanonMesh.renderingGroupId = 1;
+
+        toolSlot.addChild(kanonMesh);
+        kanonMesh.position.x = 0;
+        kanonMesh.position.y = 0;
+        kanonMesh.position.z = 0;
+
+        var toolMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        toolMaterial.diffuseTexture = new BABYLON.Texture("../images/textures/kanon1.png", scene);
+        toolMaterial.specularTexture = new BABYLON.Texture("../images/textures/kanon1_s.png", scene);
+        kanonMesh.material = toolMaterial;
+      }); */
+    }
 
     var Drives = [
       {
