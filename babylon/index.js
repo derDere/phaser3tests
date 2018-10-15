@@ -57,6 +57,8 @@ function createScene() {
   var planet = new Planet('planet', 'mars', 3000, -55000, 30000, 40000, scene);
   window.planet = planet;
 
+  setTimeout(()=>{spaceship.target(1, planet.position);},10000);
+  //setTimeout(()=>{spaceship.facePoint(planet.position);},1000);
   //ui.spaceTags.push(new SpaceTag(planet.mesh, OBJECTS.Types.PLANET, scene, cam, engine));
 
   var skybox = new SkyBox('spacebox', scene);
@@ -74,8 +76,8 @@ function createScene() {
     //spaceship.mesh.translate(BABYLON.Axis.Z, -0.1, BABYLON.Space.LOCAL);
 
     //spaceship.update();
-    if (spaceship.Tools.length >= 2)
-      spaceship.Tools[1].lookAt(planet.position);
+    //if (spaceship.Tools.length >= 2)
+      //spaceship.target(1, planet.position);//.Tools[1].lookAt(planet.position);
     //  spaceship.Tools[1].slot.lookAt(planet.position);
 
 
